@@ -23,9 +23,12 @@ export class BoardService {
   }
 
   async getByBoardIdRelatedList(boardId: number) {
+    // 게시글 상세 정보 조회
     const board = await this.boardRepository.getByIdBoard(boardId);
+    // 게시글 생성시 연결된 연관 게시물 조회
     const relateBoard =
       await this.relatedBoardRepository.getByBoarddIdRelatedBoard(boardId);
+    // 해당 게시글에 연관된 게시글 조회 (생성 이후에 연동되는 게시글 조회 역활)
     const relatedBoard = await this.relatedBoardRepository.getByRealtedIdBoard(
       boardId,
     );
@@ -44,11 +47,11 @@ export class BoardService {
     // 트랜잭션 가동
     await this.dataSource.transaction(async (te) => {
       const saveBoard = await this.boardRepository.createBoard(board);
-      // 통계용 테이블 적용
+      // 통계용 테이블도 동일하게 적용
       await this.boardISAMStatRepository.createBoardStatistics(board);
       const fullWords = board.fullWords();
       this.logger.log('fullWords', JSON.stringify(fullWords));
-      // Board_MYISAM_Statistics 테이블에서 조회한 score => 정확한 빈도를 위한
+      // Board_MYISAM_Statistics 테이블에서 조회한 score => 정확한 매칭룰 확인
       const relatedScore = await this.boardISAMStatRepository.getRelatedBoard(
         saveBoard.identifiers[0].id,
         fullWords,
@@ -61,14 +64,10 @@ export class BoardService {
         );
         return createRelatedBoardDto.transFormRelatedBoard();
       });
-      // 연관 게시물  연결
+      // 연관 게시물 연결
       await this.relatedBoardRepository.bulkInserts(relatedBoards);
     });
     // title, body에 검색 내용 제외
     return 'success';
-  }
-  private checkExcludeWords(words: string[], excludeWords: string[]) {
-    // 영어일경우 대문자로 검색
-    return words.filter((word) => !excludeWords.includes(word.toUpperCase()));
   }
 }

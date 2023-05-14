@@ -42,8 +42,8 @@ const BoardDetail = () => {
   }
   return (
     <div>
-      <button type="button" onClick={() => navigate(-1)}>
-        뒤로가기
+      <button type="button" onClick={() => navigate('/')}>
+        게시글로 돌아가기
       </button>
       <div>제목 : {data.title}</div>
       <div>본문 : {data.body}</div>
