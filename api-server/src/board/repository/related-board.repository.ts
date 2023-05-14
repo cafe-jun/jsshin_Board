@@ -21,6 +21,7 @@ export class RelatedBoardRepository extends Repository<RelatedBoard> {
       .select(['relatedBoard'])
       .innerJoinAndSelect('relatedBoard.relatedBoard', 'relatedBoardDetail')
       .where('relatedBoard.boardId = :boardId', { boardId })
+      .orderBy('relatedBoard.score', 'DESC')
       .getMany();
   }
   async getByRealtedIdBoard(boardId: number): Promise<RelatedBoard[]> {
@@ -28,6 +29,7 @@ export class RelatedBoardRepository extends Repository<RelatedBoard> {
       .select(['relatedBoard'])
       .innerJoinAndSelect('relatedBoard.board', 'originBoard')
       .where('relatedBoard.relatedBoardId = :boardId', { boardId })
+      .orderBy('relatedBoard.score', 'DESC')
       .getMany();
   }
 

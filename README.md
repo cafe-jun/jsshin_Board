@@ -19,21 +19,20 @@
 └── db-script.sql
 ```
 
-api-server 세팅 및 서버 가동
+## api-server 세팅 및 서버 가동
+
+### 1. 의존성 모듈 설치 및 프로젝트 가동
 
 ```bash
+cd api-server
+
 npm i --save
+
 -- 개발모드로 실행
 npm run start:dev
 ```
 
-simple-client 실행 및 서버 가동
-
-```bash
-npm i --save
--- 개발모드로 실행
-npm run start
-```
+### 2. DB환경변수 추가
 
 ```bash
 DB_HOST=<DB접속주소>
@@ -42,9 +41,23 @@ DB_PASSWORD=<DB접속패스워드>
 DB_DATABASE=<DB스키마>
 ```
 
-사전에 세팅될 MYSQL 환경 변수
+### simple-client 실행 및 서버 가동
 
-macbook homebrew mysql 설치 기준
+```bash
+cd simple-client
+
+npm i --save
+
+npm run start
+```
+
+## 게시판 ERD
+
+![ERD Result](github_picture/게시판ERD.png)
+
+## 사전에 세팅될 MYSQL 환경 변수
+
+### macbook homebrew mysql 설치 기준
 
 vim /opt/homebrew/etc/my.cnf
 
