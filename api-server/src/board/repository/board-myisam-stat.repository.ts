@@ -11,7 +11,14 @@ export class BoardMYISAMStatisticsRepository extends Repository<BoardMYISAMStati
     super(BoardMYISAMStatistics, dataSource.createEntityManager());
   }
   async createBoardStatistics(dto: Partial<Board>): Promise<InsertResult> {
-    return this.createQueryBuilder().insert().values(dto).execute();
+    return this.createQueryBuilder()
+      .insert()
+      .values({
+        title: dto.title,
+        body: dto.body,
+        originBoardId: dto.id,
+      })
+      .execute();
   }
   async getRelatedBoard(
     originBoardId: number,

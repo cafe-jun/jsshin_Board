@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { Board } from './board.entity';
 
@@ -23,5 +24,9 @@ export class RelatedBoard {
 
   @ManyToOne(() => Board, (board) => board.relatedBoard)
   @JoinColumn([{ name: 'boardId', referencedColumnName: 'id' }])
-  board: Board;
+  board: Board[];
+
+  @OneToOne(() => Board, (board) => board.relatedBoard)
+  @JoinColumn([{ name: 'relatedBoardId', referencedColumnName: 'id' }])
+  relatedBoard: Board;
 }

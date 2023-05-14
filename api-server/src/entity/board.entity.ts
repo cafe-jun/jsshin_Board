@@ -1,3 +1,4 @@
+import { BoardMYISAMStatistics } from './board-myisam-statistics.entity';
 import {
   Entity,
   Column,
@@ -5,6 +6,7 @@ import {
   CreateDateColumn,
   OneToMany,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 
 import { RelatedBoard } from './relation-board.entity';
@@ -26,10 +28,20 @@ export class Board {
   @JoinColumn([{ name: 'id', referencedColumnName: 'boardId' }])
   relatedBoard: RelatedBoard[];
 
+  @OneToOne(() => RelatedBoard, (relatedBoard) => relatedBoard.relatedBoard)
+  @JoinColumn([{ name: 'id', referencedColumnName: 'relatedBoardId' }])
+  relatedDetailBoard: RelatedBoard;
+
   static of(partial: Partial<Board>): Partial<Board> {
     return Object.assign(new Board(), partial);
   }
-  fullWordArray(): string[] {
-    return `${this.title} + ' ' + ${this.body}`.split(' ');
+  fullWords(): string {
+    // 게시글 제복과 본문을 합친 문자열의 중복값 제거후 결합
+    const result = this.validateWord(`${this.title} ${this.body}`.split(' '));
+    return result.join(' ');
+  }
+  private validateWord(words: string[]) {
+    // 중복값 제거
+    return [...new Set(words)];
   }
 }

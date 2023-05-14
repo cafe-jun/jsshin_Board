@@ -4,8 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { RelatedBoard } from './relation-board.entity';
+import { Board } from './board.entity';
 
 @Entity('Board_MYISAM_Statistics')
 export class BoardMYISAMStatistics {
@@ -17,6 +20,9 @@ export class BoardMYISAMStatistics {
 
   @Column('text')
   body: string;
+
+  @Column('int', { name: 'originBoardId' })
+  originBoardId: number;
 
   @CreateDateColumn()
   createdAt: Date;

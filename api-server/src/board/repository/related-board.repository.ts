@@ -15,4 +15,30 @@ export class RelatedBoardRepository extends Repository<RelatedBoard> {
   private bulkInsert(dtos: RelatedBoard[]): Promise<any> {
     return this.createQueryBuilder().insert().values(dtos).execute();
   }
+
+  async getByBoarddIdRelatedBoard(boardId: number): Promise<RelatedBoard[]> {
+    return this.createQueryBuilder('relatedBoard')
+      .select(['relatedBoard'])
+      .innerJoinAndSelect('relatedBoard.relatedBoard', 'relatedBoardDetail')
+      .where('relatedBoard.boardId = :boardId', { boardId })
+      .getMany();
+  }
+  async getByRealtedIdBoard(boardId: number): Promise<RelatedBoard[]> {
+    return this.createQueryBuilder('relatedBoard')
+      .select(['relatedBoard'])
+      .innerJoinAndSelect('relatedBoard.board', 'originBoard')
+      .where('relatedBoard.relatedBoardId = :boardId', { boardId })
+      .getMany();
+  }
+
+  // getOriginedBoardList(boardId: number): Promise<[RelatedBoard[]]> {
+  //   return this.createQueryBuilder('relatedBoard')
+  //     .select([
+  //       'relatedBoard.score',
+  //       'relatedBoard.relatedBoardId',
+  //       'relatedBoardDetail',
+  //     ])
+  //     .where('relatedBoard.relatedBoardId = :boardId', { boardId })
+  //     .getMa;
+  // }
 }

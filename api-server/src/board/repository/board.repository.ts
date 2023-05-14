@@ -1,5 +1,5 @@
 import { Board } from '../../entity/board.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Repository, DataSource, InsertResult } from 'typeorm';
 import {
   OptimizeBoardTableQuery,
@@ -23,24 +23,19 @@ export class BoardRepository extends Repository<Board> {
       },
       skip: dto.page - 1,
       take: dto.itemCount,
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
-  getRelatedBoardList(boardId: number) {
+  getByIdBoard(boardId: number) {
     return this.createQueryBuilder('board')
-      .select([
-        'board',
-        'relatedBoard.relatedBoardId',
-        'relatedBoard.score',
-        'relatedBoardDetail.title',
-        'relatedBoardDetail.body',
-      ])
-      .innerJoin('board.relatedBoard', 'relatedBoard')
-      .innerJoin('relatedBoard.board', 'relatedBoardDetail')
+      .select(['board.id ', 'board.title', 'board.body', 'board.createdAt'])
       .where('board.id = :boardId', { boardId })
-      .orderBy('relatedBoard.score', 'DESC')
-      .getMany();
+      .getOne();
   }
+
   // 전체게시글 중에 60%이상에서 발견되는 단어는 연관게시글을 파악할때 사용하지 않도록 전체 게시글의 임계치
   async getExcludeWords(): Promise<string[]> {
     await this.dataSource.query(OptimizeBoardTableQuery);
