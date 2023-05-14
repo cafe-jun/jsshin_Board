@@ -80,9 +80,9 @@ SET GLOBAL innodb_optimize_fulltext_only=ON;
 
 ```
 
-동일한 테이블에 다른(INNODB,MYISAM) 엔진을 2개 생성한 이유
+## 동일한 테이블에 다른(INNODB,MYISAM) 엔진을 2개 생성한 이유
 
-Innodb : FullText Index 활용하여 전체 게시글의 단여별 개수와 빈도수를 제공해주는 테이블 제공
+Innodb : FullText Index 활용하여 전체 게시글의 단여 빈도수를 제공해주는 테이블 제공
 
 MyISAM : FullText Index Boolean Mode 사용시 정확한 매칭 카운트를 제공 (Read 작업에 성능이 좋음)
 
