@@ -49,12 +49,20 @@ export class BoardService {
       const saveBoard = await this.boardRepository.createBoard(board);
       // 통계용 테이블도 동일하게 적용
       await this.boardISAMStatRepository.createBoardStatistics(board);
-      const fullWords = board.fullWords();
-      this.logger.log('fullWords', JSON.stringify(fullWords));
+      const fullWordsArray = board.fullWordsArray();
+      // 전체 게시글의 60% 이상의 빈도수의 단어 제외
+      this.logger.log('fullWords', JSON.stringify(fullWordsArray));
+      const excludeFrequencyWords = fullWordsArray.filter(
+        (word) => !excludeWords.includes(word),
+      );
+      this.logger.log(
+        'excludeFrequencyWords',
+        JSON.stringify(excludeFrequencyWords),
+      );
       // Board_MYISAM_Statistics 테이블에서 조회한 score => 정확한 매칭룰 확인
       const relatedScore = await this.boardISAMStatRepository.getRelatedBoard(
         saveBoard.identifiers[0].id,
-        fullWords,
+        excludeFrequencyWords.join(' '),
       );
       const relatedBoards = relatedScore.map((boardScore) => {
         const createRelatedBoardDto = new CreateRelatedBoardDto(

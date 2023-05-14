@@ -35,10 +35,13 @@ export class Board {
   static of(partial: Partial<Board>): Partial<Board> {
     return Object.assign(new Board(), partial);
   }
-  fullWords(): string {
+  fullWordsArray(): string[] {
     // 게시글 제복과 본문을 합친 문자열의 중복값 제거후 결합
-    const result = this.validateWord(`${this.title} ${this.body}`.split(' '));
-    return result.join(' ');
+    const boardWords = `${this.title} ${this.body}`;
+    const regex = /[,+()*^%$#@!]/g;
+    // 특수문자를 띄어쓰기로 대체
+    const excludepecialWords = boardWords.replace(regex, '');
+    return this.validateWord(excludepecialWords.split(' '));
   }
   private validateWord(words: string[]) {
     // 중복값 제거

@@ -16,7 +16,7 @@
 │   │    ├─── page   : 게시판 추가,리스트,연관게시글 페이지
 │   │    ├─── util   : apiClient 모듈
 │   │
-└── db-script.sql
+└── db-script.sql    : 과제에 사용했던 db 파일 (seed 데이터 존재)
 ```
 
 ## api-server 세팅 및 서버 가동

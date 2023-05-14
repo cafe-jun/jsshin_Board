@@ -2,7 +2,7 @@ import { Board } from '../../entity/board.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository, DataSource, InsertResult } from 'typeorm';
 import { FrequencyWordsMYISAMEngineQuery } from '../query/raw.query';
-import { BoardScores } from '../type/board.type';
+import { IBoardScores } from '../type/board.type';
 import { BoardMYISAMStatistics } from '../../entity/board-myisam-statistics.entity';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class BoardMYISAMStatisticsRepository extends Repository<BoardMYISAMStati
   async getRelatedBoard(
     originBoardId: number,
     words: string,
-  ): Promise<BoardScores[]> {
+  ): Promise<IBoardScores[]> {
     return this.dataSource.query(
       FrequencyWordsMYISAMEngineQuery(originBoardId, words),
     );
