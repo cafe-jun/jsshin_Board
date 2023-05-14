@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Board } from './entity/board.entity';
 import { BoardModule } from './board/board.module';
+
 import { RelatedBoard } from './entity/relation-board.entity';
 import { BoardMYISAMStatistics } from './entity/board-myisam-statistics.entity';
 
