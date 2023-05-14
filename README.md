@@ -49,6 +49,7 @@ cd simple-client
 npm i --save
 
 npm run start
+
 ```
 
 ## 게시판 ERD
@@ -122,7 +123,7 @@ FullText Index를 활용하여 MYISAM엔진 게시판 테이블에 생성한 게
 
 ![Query Result](github_picture/게시글생성시연관게시글판단기준.png)
 
-게시글 등록시 서비스 로직 설명
+### 게시글 등록시 서비스 로직
 
 ```javascript
 // 전체 게시글의 60% 이상의 빈도수의 단어 배열로 반환
@@ -158,7 +159,7 @@ async createBoard(board: Partial<Board>) {
   }
 ```
 
-연관 게시글 조회 서비스 로직
+### 연관 게시글 조회 서비스 로직
 
 ```javascript
 async getByBoardIdRelatedList(boardId: number) {
@@ -179,3 +180,17 @@ async getByBoardIdRelatedList(boardId: number) {
     return result;
   }
 ```
+
+## API 정보
+
+### 1. 게시글 리스트 조회
+
+GET /board
+
+### 2. 게시글 상세정보 및 연관 게시글 조회
+
+GET /board/:id
+
+### 3. 게시글 생성
+
+POST /board
